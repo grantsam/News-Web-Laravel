@@ -74,7 +74,7 @@
                             </p>
                             <div class="news-card col-md-12"
                                 style="display: flex; justify-content: center; align-items: center;">
-                                <img src="./img/{{ $news['image'] }}" alt="main news" class="img-fluid news-image">
+                                <img src="./{{ $news['image'] }}" alt="main news" class="img-fluid news-image">
                             </div>
                         </div>
                     @endforeach

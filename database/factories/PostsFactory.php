@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +24,8 @@ class PostsFactory extends Factory
         return [
             'title' => fake()->sentence(),
             'author' => fake()->name(),
-            'slug' => fake()->slug(),
+            'category_id' => Category::factory(),
+            'slug' => Str::slug(fake()->sentence()),
             'content' => fake()->paragraph(),
             'image'   => 'img/' . $randomImage, // Path relatif gambar
         ];

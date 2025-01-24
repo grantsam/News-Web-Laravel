@@ -5,7 +5,7 @@ use App\Models\posts;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('home');
+    return view('home',['posts' => posts::all()]);
 });
 
 Route::get('/about', function () {
