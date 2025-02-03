@@ -35,18 +35,18 @@
 
     <div class="row">
       <div class="col-lg-8">
-        <a href="news.html" style="text-decoration: none; color: inherit;">
-          <div class="news-card" href="news.html">
-            <img src="./img/news-img3.jpg" alt="Main news" class="img- fluid news-image">
+        <!-- Main News -->  
+        @if($majorBreakingStory)
+        <a href="{{ route('news.show', $majorBreakingStory->id) }}" style="text-decoration: none; color: inherit;">
+          <div class="news-card">
+            <img src="{{ asset( $majorBreakingStory->image) }}" alt="Main news" class="img-fluid news-image">
             <div class="news-content">
-              <h2 class="news-title">Major Breaking News Story</h2>
-              <p class="news-title">Comprehensive coverage of the most important story of the day, with detailed
-                analysis and expert
-                opinions..
-              </p>
+              <h2 class="news-title">{{ $majorBreakingStory->title }}</h2>
+              <p>{{ $majorBreakingStory->content }}</p>
             </div>
           </div>
         </a>
+        @endif
         <div class="caros">
           <div class="carousel slide" id="newsCarousel">
             <a href="news.html" style="text-decoration: none; color: inherit;">

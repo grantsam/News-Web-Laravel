@@ -2,18 +2,37 @@
 
 namespace App\Models;
 
-class news
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class news extends Model
 {
-    public static function all()
+    use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'author',
+        'category_id',
+        'slug',
+        'content',
+        'image',
+    ];
+
+    /**
+     * Get a snippet of the content (maximum 100 words).
+     */
+    public function getContentSnippetAttribute()
     {
-        return [
-            [
-                'title' => 'Berita 5',
-                'slug' => 'berita-5',
-                'author' => 'John grant',
-                'content' => 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.',
-                'image' => 'news-4.jpg'
-            ]
-        ];
+        return str_word_count($this->content, 0) > 100
+            ? implode(' ', array_slice(explode(' ', $this->content), 0, 100)) . '...'
+            : $this->content;
+    }
+
+    /**
+     * Define the relationship with the Category model.
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

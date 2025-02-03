@@ -191,3 +191,25 @@ window.addEventListener('scroll', function () {
 scrollToTopBtn.addEventListener('click', function () {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+// Efek fade in saat halaman dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.remove('fade-out'); // Pastikan halaman tampil penuh saat dimuat
+});
+
+// Efek fade out saat tautan di halaman diklik
+document.body.addEventListener('click', (event) => {
+    const target = event.target;
+    const linkTarget = target.closest('a'); // Cari tautan terdekat jika ada
+
+    if (linkTarget && linkTarget.getAttribute('href')) {
+        event.preventDefault(); // Mencegah navigasi langsung
+
+        document.body.classList.add('fade-out'); // Mulai efek fade out
+        
+        // Navigasi ke tautan setelah efek transisi
+        setTimeout(() => {
+            window.location.href = linkTarget.getAttribute('href');
+        }, 500); // Sesuaikan durasi dengan `transition` CSS
+    }
+});

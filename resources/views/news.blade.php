@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/news.css">
-
+    <link rel="stylesheet" href="{{ asset('css/news.css') }}">
 </head>
 
 <body class="body-body">
@@ -66,18 +65,18 @@
             <div class="container-main col-lg-8">
                 <!-- Main News -->
                 <section>
-                    @foreach ($posts as $news)
-                        <div class="news-card">
-                            <h1>{{ $news['title'] }}</h1>
-                            <p>
-                                {{ $news['content'] }}
-                            </p>
-                            <div class="news-card col-md-12"
-                                style="display: flex; justify-content: center; align-items: center;">
-                                <img src="./{{ $news['image'] }}" alt="main news" class="img-fluid news-image">
-                            </div>
+
+                    <div class="news-card">
+                        <h1>{{ $post->title }}</h1>
+                        <p>
+                            {{ $post->content }}
+                        </p>
+                        <div class="news-card col-md-12"
+                            style="display: flex; justify-content: center; align-items: center;">
+                            <img src="{{ asset($post->image) }}" alt="{{ $post->title }}" class="img-fluid news-image">
                         </div>
-                    @endforeach
+                    </div>
+
                 </section>
 
                 <!-- More News -->
@@ -87,28 +86,28 @@
                             <div class="colomn-more d-flex gap-2 mx-1">
                                 <a href="news.html" style="text-decoration: none; color: inherit;">
                                     <div class="news-card-more">
-                                        <img src="./img/news-img7.jpg" alt="news more"
+                                        <img src="/img/news-img7.jpg" alt="news more"
                                             class="img-thumbnail news-image-more">
                                         <h5 style="text-align: center;">Title 1</h5>
                                     </div>
                                 </a>
                                 <a href="news.html" style="text-decoration: none; color: inherit;">
                                     <div class="news-card-more">
-                                        <img src="./img/news-img8.jpg" alt="news more"
+                                        <img src="/img/news-img8.jpg" alt="news more"
                                             class="img-thumbnail news-image-more">
                                         <h5 style="text-align: center;">Title 2</h5>
                                     </div>
                                 </a>
                                 <a href="news.html" style="text-decoration: none; color: inherit;">
                                     <div class="news-card-more">
-                                        <img src="./img/news-img6.jpg" alt="news more"
+                                        <img src="/img/news-img6.jpg" alt="news more"
                                             class="img-thumbnail news-image-more">
                                         <h5 style="text-align: center;">Title 3</h5>
                                     </div>
                                 </a>
                                 <a href="news.html" style="text-decoration: none; color: inherit;">
                                     <div class="news-card-more">
-                                        <img src="./img/news-img4.jpg" alt="news more"
+                                        <img src="/img/news-img4.jpg" alt="news more"
                                             class="img-thumbnail news-image-more">
                                         <h5 style="text-align: center;">Title 4</h5>
                                     </div>
@@ -117,28 +116,28 @@
                             <div class="colomn-more d-flex gap-2 mx-1">
                                 <a href="news.html" style="text-decoration: none; color: inherit;">
                                     <div class="news-card-more">
-                                        <img src="./img/news-img3.jpg" alt="news more"
+                                        <img src="/img/news-img3.jpg" alt="news more"
                                             class="img-thumbnail news-image-more">
                                         <h5 style="text-align: center;">Title 5</h5>
                                     </div>
                                 </a>
                                 <a href="news.html" style="text-decoration: none; color: inherit;">
                                     <div class="news-card-more">
-                                        <img src="./img/news-img2.jpg" alt="news more"
+                                        <img src="/img/news-img2.jpg" alt="news more"
                                             class="img-thumbnail news-image-more">
                                         <h5 style="text-align: center;">Title 6</h5>
                                     </div>
                                 </a>
                                 <a href="news.html" style="text-decoration: none; color: inherit;">
                                     <div class="news-card-more">
-                                        <img src="./img/news-img1.png" alt="news more"
+                                        <img src="/img/news-img1.png" alt="news more"
                                             class="img-thumbnail news-image-more">
                                         <h5 style="text-align: center;">Title 7</h5>
                                     </div>
                                 </a>
                                 <a href="news.html" style="text-decoration: none; color: inherit;">
                                     <div class="news-card-more">
-                                        <img src="./img/news-img5.jpg" alt="news more"
+                                        <img src="/img/news-img5.jpg" alt="news more"
                                             class="img-thumbnail news-image-more">
                                         <h5 style="text-align: center;">Title 8</h5>
                                     </div>
@@ -232,19 +231,19 @@
                     <h4 class="mb-4">Hot Topic</h4>
                     <a href="news.html" style="text-decoration: none; color: inherit;">
                         <div class="popular-item-sidebar">
-                            <img src="./img/news-img6.jpg" alt="Main news" class="img-fluid news-image-sidebar">
+                            <img src="/img/news-img6.jpg" alt="Main news" class="img-fluid news-image-sidebar">
                             <h5>Hot Topic Title 1</h5>
                         </div>
                     </a>
                     <a href="news.html" style="text-decoration: none; color: inherit;">
                         <div class="popular-item-sidebar">
-                            <img src="./img/news-img3.jpg" alt="Main news" class="img-fluid news-image-sidebar">
+                            <img src="/img/news-img3.jpg" alt="Main news" class="img-fluid news-image-sidebar">
                             <h5>Hot Topic Title 2</h5>
                         </div>
                     </a>
                     <a href="news.html" style="text-decoration: none; color: inherit;">
                         <div class="popular-item-sidebar">
-                            <img src="./img/news-img5.jpg" alt="Main news" class="img-fluid news-image-sidebar">
+                            <img src="/img/news-img5.jpg" alt="Main news" class="img-fluid news-image-sidebar">
                             <h5>Hot Topic Title 3</h5>
                         </div>
                     </a>
@@ -319,7 +318,10 @@
     </footer>
 </body>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/news.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+  </script>
+<script src="{{ asset('js/news.js') }}"></script>
+
 
 </html>
