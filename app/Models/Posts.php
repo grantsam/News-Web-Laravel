@@ -1,23 +1,31 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-use App\Models\Category;
 class Posts extends Model
 {
-    /** @use HasFactory<\Database\Factories\PostFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    protected $table = 'posts';
-    protected $fillable = ['title', 'author', 'slug', 'content', 'image'];
+    protected $fillable = ['title', 'user_id', 'category_id', 'slug', 'content', 'image'];
 
-    public function Category(): BelongsTo
+    // Relasi ke User
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Relasi ke Category
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    // Accessor untuk mendapatkan nama author dari User
+    public function getAuthorAttribute(): string
+    {
+        return $this->user ? $this->user->name : 'Unknown';
     }
 }
