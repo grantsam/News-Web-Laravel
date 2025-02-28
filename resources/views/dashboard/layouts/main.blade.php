@@ -18,6 +18,12 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
 <!-- Custom styles for this template -->
 <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
+
+<!-- Trix Editor CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.css">
+
+<!-- Trix Editor JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.js"></script>
 </head>
 
 <body>

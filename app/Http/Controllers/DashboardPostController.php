@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Posts;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use \Cviebrock\EloquentSluggable\Services\SlugService;
 
 class DashboardPostController extends Controller
 {
@@ -13,12 +15,9 @@ class DashboardPostController extends Controller
      */
     public function index()
     {
-        return Posts::where('author', Auth::user()->name)->get();
-        // return view('dashboard.posts.index', [
-             
-        //     'posts' => Posts::all()
-            
-        // ]);
+        return view('dashboard.posts.index', [
+            'posts' => Posts::where('author', Auth::user()->name)->get()
+        ]);
     }
 
     /**
@@ -26,7 +25,9 @@ class DashboardPostController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.posts.create', [
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -34,16 +35,31 @@ class DashboardPostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'slug' => 'required|unique:posts,slug',
+            'category_id' => 'required',
+            'content' => 'required',
+        ]);
+    
+        // Return JSON untuk debugging
+        return response()->json([
+            'message' => 'Data berhasil diterima',
+            'data' => $validatedData
+        ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Posts $posts)
+
+
+    public function show(Posts $post)
     {
-        //
+        // dd($post); // Debugging - Check if data is available
+        return view('dashboard.posts.show', ['post' => $post]);
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -68,4 +84,12 @@ class DashboardPostController extends Controller
     {
         //
     }
+
+    public function checkSlug(Request $request)
+    {
+        $slug = SlugService::createSlug(Posts::class, 'slug', $request->title);
+        return response()->json(['slug' => $slug]);
+    }
+
+
 }
