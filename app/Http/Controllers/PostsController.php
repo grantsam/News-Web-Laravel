@@ -9,6 +9,6 @@ class PostsController extends Controller
     public function show($id)
     {
         $post = Posts::findOrFail($id); // Secure way to find or return 404 if not found
-        return view('news', compact('post'));
+        return view('news', compact('posts'));
     }
 }

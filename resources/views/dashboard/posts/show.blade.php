@@ -13,7 +13,12 @@
                     <h1>{{ $post->title }}</h1>
                     <a href="/dashboard/posts" class="btn btn-success">back</a>
                     <a href="" class="btn btn-warning">edit</a>
-                    <a href="" class="btn btn-danger">delete</a>
+                    <form action="/dashboard/posts/{{ $post->slug }}" method="POST" class="d-inline">
+                        @method('delete')
+                        @csrf
+                        <button type="submit" class="btn btn-danger border-0"
+                            onclick="return confirm('Are you sure?')">Delete</button>
+                    </form> 
                     <p>
                         {{ $post->content }}
                     </p>

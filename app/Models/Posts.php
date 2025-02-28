@@ -11,7 +11,7 @@ class Posts extends Model
 {
     use HasFactory, Sluggable;
 
-    protected $fillable = ['title', 'user_id', 'category_id', 'slug', 'content', 'image'];
+    protected $fillable = ['title', 'user_id', 'category_id', 'slug', 'content', 'image', 'author'];
 
     // Relasi ke User
     public function user(): BelongsTo
