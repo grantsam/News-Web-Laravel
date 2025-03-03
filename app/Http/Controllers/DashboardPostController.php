@@ -8,9 +8,15 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
-
+use App\Services\UnsplashService;
 class DashboardPostController extends Controller
 {
+    protected $unsplashService;
+    
+    public function __construct(UnsplashService $unsplashService)
+    {
+        $this->unsplashService = $unsplashService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -36,12 +42,18 @@ class DashboardPostController extends Controller
      */
     public function store(Request $request)
     {
+        
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'slug' => 'required|unique:posts,slug',
             'category_id' => 'required',
+            'image' =>'image|file|max:10240',
             'content' => 'required',
         ]);
+
+        if ($request->file('image')) {
+            $validatedData['image'] = $request->file('image')->store('post-images');
+        } 
 
         $validatedData['user_id'] = Auth::id();
         $validatedData['author'] = Auth::user()->name;
@@ -65,7 +77,15 @@ class DashboardPostController extends Controller
     public function show(Posts $post)
     {
         // dd($post); // Debugging - Check if data is available
-        return view('dashboard.posts.show', ['post' => $post]);
+        $photo = [];
+        
+        if (!$post->image) {
+            $categoryName = $post->category->name ?? 'news';
+            $photo = $this->unsplashService->getRandomImage($categoryName);
+        }
+        
+        return view('dashboard.posts.show', compact('post', 'photo'));
+
     }
 
 

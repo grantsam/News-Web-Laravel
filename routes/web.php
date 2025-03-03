@@ -8,9 +8,14 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UnsplashController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPostController;
 
+
+Route::get('/unsplash-image/{category}', [HomeController::class, 'getRandomUnsplashImage'])
+    ->name('get.unsplash.image');
+    
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/about', function () {

@@ -73,7 +73,20 @@
                         </p>
                         <div class="news-card col-md-12"
                             style="display: flex; justify-content: center; align-items: center;">
-                            <img src="{{ asset($post->image) }}" alt="{{ $post->title }}" class="img-fluid news-image">
+                            @if ($post->image)
+                                <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}"
+                                    class="img-fluid news-image">
+                            @elseif (!empty($photo))
+                                <img src="{{ $photo['urls']['regular'] ?? '' }}" alt="{{ $post->title }}"
+                                    class="img-fluid news-image">
+                                <div class="photo-attribution small text-muted mt-1">
+                                    Photo by <a href="{{ $photo['user']['links']['html'] ?? '#' }}" target="_blank">{{ $photo['user']['name'] ?? 'Unknown' }}</a> 
+                                    on <a href="https://unsplash.com" target="_blank">Unsplash</a>
+                                </div>
+                            @else
+                                <img src="https://source.unsplash.com/1200x400?{{ $post->category->name ?? 'news' }}"
+                                    alt="{{ $post->title }}" class="img-fluid news-image">
+                            @endif
                         </div>
                     </div>
 

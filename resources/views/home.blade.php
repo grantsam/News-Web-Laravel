@@ -1,3 +1,10 @@
+<?php
+function getRandomUnsplashImage($query = 'news')
+{
+    // Menggunakan Unsplash Source API untuk mendapatkan gambar acak
+    return 'https://source.unsplash.com/1200x400/?' . urlencode($query);
+}
+?>
 <!DOCTYPE html>
 <html>
 
@@ -7,8 +14,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-
-
 </head>
 
 <body class="body-body">
@@ -40,8 +45,14 @@
                             <a href="{{ route('news.show', $majorBreakingStory->id) }}"
                                 style="text-decoration: none; color: inherit;">
                                 <div class="news-card">
-                                    <img src="{{ asset($majorBreakingStory->image) }}" alt="Main news"
-                                        class="img-fluid news-image">
+                                    @if ($majorBreakingStory->image)
+                                        <img src="{{ Storage::url($majorBreakingStory->image) }}" alt="Main news"
+                                            class="img-fluid news-image">
+                                    @else
+                                        <img src="{{ isset($photoData['urls']) ? $photoData['urls']['regular'] : getRandomUnsplashImage() }}"
+                                            alt="{{ isset($photoData['alt_description']) ? $photoData['alt_description'] : 'News image' }}"
+                                            class="img-fluid news-image">
+                                    @endif
                                     <div class="news-content">
                                         <h2 class="news-title">{{ $majorBreakingStory->title }}</h2>
                                         <p>{{ $majorBreakingStory->content }}</p>
@@ -81,8 +92,14 @@
                                         <a href="{{ route('news.show', $technews->id) }}"
                                             style="text-decoration: none; color: inherit;">
                                             <div class="news-card">
-                                                <img src="{{ asset($technews->image) }}" alt="News"
-                                                    class="img-fluid news-image">
+                                                @if ($technews->image)
+                                                    <img src="{{ Storage::url($technews->image) }}" alt="News"
+                                                        class="img-fluid news-image">
+                                                @else
+                                                    <img src="https://source.unsplash.com/1200x400?{{ $technews->category->name }}"
+                                                        alt="{{ $technews->category->name }}"
+                                                        class="img-fluid news-image">
+                                                @endif
                                                 <div class="news-content">
                                                     <h3 class="news-title">{{ $technews->title }}</h3>
                                                     <p>{{ $technews->content }}</p>
@@ -97,12 +114,19 @@
                         <!--sub main-->
                         @if ($subMainNews->count() > 0)
                             @foreach ($subMainNews as $subnews)
-                                <a href="{{ route('news.show', $subnews->id) }}" style="text-decoration: none; color: inherit;">
+                                <a href="{{ route('news.show', $subnews->id) }}"
+                                    style="text-decoration: none; color: inherit;">
                                     <div class="news-card-sub">
-                                        <img src="{{ asset($subnews->image) }}" alt="Main news" class="img-fluid news-image-sub">
+                                        @if ($subnews->image)
+                                            <img src="{{ Storage::url($subnews->image) }}" alt="Main news"
+                                                class="img-fluid news-image-sub">
+                                        @else
+                                            <img src="https://source.unsplash.com/1200x400?{{ $subnews->category->name }}"
+                                                alt="{{ $subnews->category->name }}" class="img-fluid news-image-sub">
+                                        @endif
                                         <div class="news-content">
                                             <h2 class="news-title">{{ $subnews->title }}</h2>
-                                            <p>{{ $subnews ->content }}</p>
+                                            <p>{{ $subnews->content }}</p>
                                         </div>
                                     </div>
                                 </a>
@@ -115,21 +139,19 @@
                         <div class="side-bar-news mt-1">
                             <h4 class="mb-4">Trending</h4>
                             <div class="row">
-                                @if ($trendingNews -> count()>0)
-                                @foreach ($trendingNews as $trendnews)
-                                <a href="{{ route('news.show',$trendnews->id) }}" style="text-decoration: none; color: inherit;" class="d-flex trend">
-                                    <div class="hastag col-md-2">
-                                        <h5>#</h5>
-                                    </div>
-                                    <div class="popular-item col-md-10">
-                                        <h5>{{ $trendnews->title }}</h5>
-                                    </div>
-                                </a>
-                                    
-                                @endforeach
-                 
+                                @if ($trendingNews->count() > 0)
+                                    @foreach ($trendingNews as $trendnews)
+                                        <a href="{{ route('news.show', $trendnews->id) }}"
+                                            style="text-decoration: none; color: inherit;" class="d-flex trend">
+                                            <div class="hastag col-md-2">
+                                                <h5>#</h5>
+                                            </div>
+                                            <div class="popular-item col-md-10">
+                                                <h5>{{ $trendnews->title }}</h5>
+                                            </div>
+                                        </a>
+                                    @endforeach
                                 @endif
-               
                             </div>
                         </div>
 
@@ -246,6 +268,5 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
 </script>
 <script src="js/script.js"></script>
-
 
 </html>
