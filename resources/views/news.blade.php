@@ -76,15 +76,11 @@
                             @if ($post->image)
                                 <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}"
                                     class="img-fluid news-image">
-                            @elseif (!empty($photo))
-                                <img src="{{ $photo['urls']['regular'] ?? '' }}" alt="{{ $post->title }}"
+                            @elseif ($photo)
+                                <img src="{{ $photo['urls']['regular'] }}" alt="{{ $photo['alt_description'] }}"
                                     class="img-fluid news-image">
-                                <div class="photo-attribution small text-muted mt-1">
-                                    Photo by <a href="{{ $photo['user']['links']['html'] ?? '#' }}" target="_blank">{{ $photo['user']['name'] ?? 'Unknown' }}</a> 
-                                    on <a href="https://unsplash.com" target="_blank">Unsplash</a>
-                                </div>
                             @else
-                                <img src="https://source.unsplash.com/1200x400?{{ $post->category->name ?? 'news' }}"
+                                <img src="https://source.unsplash.com/1200x400?{{ optional($post->category)->name ?? 'news' }}"
                                     alt="{{ $post->title }}" class="img-fluid news-image">
                             @endif
                         </div>
@@ -332,8 +328,8 @@
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-  </script>
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+</script>
 <script src="{{ asset('js/news.js') }}"></script>
 
 

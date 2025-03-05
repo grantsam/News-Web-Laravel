@@ -17,20 +17,36 @@ class HomeController extends Controller
 
     public function index()
     {
-        $majorBreakingStory = Posts::where('category_id', 1)->latest()->first();
+        $majorBreakingStory = Posts::where('category_id', 2)->latest()->first();
         $technologyBusinessNews = Posts::where('category_id', 2)->latest()->take(2)->get();
         $subMainNews = Posts::where('category_id', 3)->latest()->take(3)->get();
         $trendingNews = Posts::whereIn('category_id', [1, 2, 3])->latest()->take(5)->get();
 
-        // Get a random image
-        $photoData = $this->unsplashService->getRandomImage();
+        // Jika berita utama tidak memiliki gambar, ambil dari Unsplash
+        $photo = null;
+        if ($majorBreakingStory && !$majorBreakingStory->image) {
+            $photo = $this->unsplashService->getRandomImage();
+        }
+        foreach ($technologyBusinessNews as $technews) {
+            if (!$technews->image) {
+                $photo = $this->unsplashService->getRandomImage();
+                break; // Ambil satu gambar Unsplash saja
+            }
+        }
+        foreach ($subMainNews as $subnews) {
+            if (!$subnews->image) {
+                $photo = $this->unsplashService->getRandomImage();
+                break; // Ambil satu gambar Unsplash saja
+            }
+        }
+
 
         return view('home', compact(
             'majorBreakingStory',
             'technologyBusinessNews',
             'subMainNews',
             'trendingNews',
-            'photoData'
+            'photo'
         ));
     }
 }

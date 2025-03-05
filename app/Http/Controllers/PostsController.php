@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Posts;
+use App\Models\Posts; // Corrected model name
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http; // Gunakan HTTP client Laravel
 use App\Services\UnsplashService;
+
 class PostsController extends Controller
 {
     protected $unsplashService;
-    
+
     public function __construct(UnsplashService $unsplashService)
     {
         $this->unsplashService = $unsplashService;
@@ -18,13 +18,13 @@ class PostsController extends Controller
     public function show($id)
     {
         $post = Posts::findOrFail($id);
-        $photo = [];
-        
+        $photo = null;
+
         if (!$post->image) {
-            $categoryName = $post->category->name ?? 'news';
-            $photo = $this->unsplashService->getRandomImage($categoryName);
+            $categoryName = optional($post->category)->name ?? 'news';
+            $photo = $this->unsplashService->getRandomImage();
         }
-        
+
         return view('news', compact('post', 'photo'));
     }
 }

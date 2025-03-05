@@ -7,24 +7,57 @@ use Illuminate\Support\Facades\Log;
 
 class UnsplashService
 {
-    public function getRandomImage($query = 'news')
+    private $accessKey;
+
+    public function __construct()
     {
-        $photo = [];
-        
+        $this->accessKey = config('services.unsplash.access_key');
+    }
+
+    public function getRandomImage()
+    {
         try {
-            $response = Http::get('https://api.unsplash.com/photos/random', [
-                'client_id' => config('services.unsplash.access_key'),
-                'query' => $query
+            $response = Http::withHeaders([
+                'Authorization' => 'Client-ID ' . $this->accessKey
+            ])->get('https://api.unsplash.com/photos/random', [
+                'orientation' => 'landscape',
+                'count' => 1
             ]);
-            
-            if ($response->successful() && !empty($response->json())) {
-                $photo = $response->json();
+
+            // Log full response for debugging
+            Log::info('Unsplash API Response', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+
+            if ($response->successful()) {
+                $photo = $response->json()[0];
+                return [
+                    'urls' => $photo['urls'],
+                    'alt_description' => $photo['alt_description'] ?? 'Random landscape image',
+                    'photographer' => $photo['user']['name'] ?? 'Unknown',
+                ];
+            } else {
+                // Log specific error details
+                Log::error('Unsplash API Error', [
+                    'status' => $response->status(),
+                    'body' => $response->body()
+                ]);
             }
         } catch (\Exception $e) {
-            Log::error('Unsplash API error: ' . $e->getMessage());
+            Log::error('Unsplash API Exception', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
         }
-        
-        
-        return $photo;
+
+        // Fallback to a standard random image URL
+        return [
+            'urls' => [
+                'regular' => 'https://picsum.photos/1200/400'
+            ],
+            'alt_description' => 'Random placeholder image',
+            'photographer' => 'Lorem Picsum'
+        ];
     }
 }

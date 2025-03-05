@@ -1,4 +1,5 @@
 <?php
+
 function getRandomUnsplashImage($query = 'news')
 {
     // Menggunakan Unsplash Source API untuk mendapatkan gambar acak
@@ -45,16 +46,18 @@ function getRandomUnsplashImage($query = 'news')
                             <a href="{{ route('news.show', $majorBreakingStory->id) }}"
                                 style="text-decoration: none; color: inherit;">
                                 <div class="news-card">
-                                    @if ($majorBreakingStory->image)
-                                        <img src="{{ Storage::url($majorBreakingStory->image) }}" alt="Main news"
+                                    @if (!empty($majorBreakingStory->image))
+                                        <img src="{{ Str::startsWith($majorBreakingStory->image, 'http') ? $majorBreakingStory->image : asset('storage/' . $majorBreakingStory->image) }}"
+                                            alt="{{ $majorBreakingStory->title }}" class="img-fluid news-image">
+                                    @elseif (!empty($photo))
+                                        <img src="{{ $photo['urls']['regular'] }}" alt="{{ $photo['alt_description'] }}"
                                             class="img-fluid news-image">
                                     @else
-                                        <img src="{{ isset($photoData['urls']) ? $photoData['urls']['regular'] : getRandomUnsplashImage() }}"
-                                            alt="{{ isset($photoData['alt_description']) ? $photoData['alt_description'] : 'News image' }}"
+                                        <img src="https://source.unsplash.com/random/1200x400" alt="Random news image"
                                             class="img-fluid news-image">
                                     @endif
                                     <div class="news-content">
-                                        <h2 class="news-title">{{ $majorBreakingStory->title }}</h2>
+                                        <h3 class="news-title">{{ $majorBreakingStory->title }}</h3>
                                         <p>{{ $majorBreakingStory->content }}</p>
                                     </div>
                                 </div>
@@ -92,13 +95,16 @@ function getRandomUnsplashImage($query = 'news')
                                         <a href="{{ route('news.show', $technews->id) }}"
                                             style="text-decoration: none; color: inherit;">
                                             <div class="news-card">
-                                                @if ($technews->image)
-                                                    <img src="{{ Storage::url($technews->image) }}" alt="News"
+                                                @if (!empty($technews->image))
+                                                    <img src="{{ Str::startsWith($technews->image, 'http') ? $technews->image : asset('storage/' . $technews->image) }}"
+                                                        alt="{{ $technews->title }}" class="img-fluid news-image">
+                                                @elseif (!empty($photo))
+                                                    <img src="{{ $photo['urls']['regular'] }}"
+                                                        alt="{{ $photo['alt_description'] }}"
                                                         class="img-fluid news-image">
                                                 @else
-                                                    <img src="https://source.unsplash.com/1200x400?{{ $technews->category->name }}"
-                                                        alt="{{ $technews->category->name }}"
-                                                        class="img-fluid news-image">
+                                                    <img src="https://source.unsplash.com/random/1200x400"
+                                                        alt="Random news image" class="img-fluid news-image">
                                                 @endif
                                                 <div class="news-content">
                                                     <h3 class="news-title">{{ $technews->title }}</h3>
@@ -109,6 +115,7 @@ function getRandomUnsplashImage($query = 'news')
                                     </div>
                                 @endforeach
                             @endif
+
                         </div>
 
                         <!--sub main-->
@@ -117,12 +124,15 @@ function getRandomUnsplashImage($query = 'news')
                                 <a href="{{ route('news.show', $subnews->id) }}"
                                     style="text-decoration: none; color: inherit;">
                                     <div class="news-card-sub">
-                                        @if ($subnews->image)
-                                            <img src="{{ Storage::url($subnews->image) }}" alt="Main news"
-                                                class="img-fluid news-image-sub">
+                                        @if (!empty($subnews->image))
+                                            <img src="{{ Str::startsWith($subnews->image, 'http') ? $subnews->image : asset('storage/' . $subnews->image) }}"
+                                                alt="{{ $subnews->title }}" class="img-fluid news-image-sub">
+                                        @elseif (!empty($photo))
+                                            <img src="{{ $photo['urls']['regular'] }}"
+                                                alt="{{ $photo['alt_description'] }}" class="img-fluid news-image-sub">
                                         @else
-                                            <img src="https://source.unsplash.com/1200x400?{{ $subnews->category->name }}"
-                                                alt="{{ $subnews->category->name }}" class="img-fluid news-image-sub">
+                                            <img src="https://source.unsplash.com/random/1200x400"
+                                                alt="Random news image" class="img-fluid news-image-sub">
                                         @endif
                                         <div class="news-content">
                                             <h2 class="news-title">{{ $subnews->title }}</h2>
