@@ -22,12 +22,8 @@
                             @if ($post->image)
                                 <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}"
                                     class="img-fluid news-image">
-                            @elseif(isset($photo['urls']['regular']))
-                                <img src="{{ $photo['urls']['regular'] }}" 
-                                    alt="{{ $photo['alt_description'] ?? 'Random Unsplash Photo' }}" 
-                                    class="img-fluid news-image">
                             @else
-                                <p>Gagal memuat gambar.</p>
+                                <p>Gambar tidak tersedia.</p>
                             @endif
 
                         </div>

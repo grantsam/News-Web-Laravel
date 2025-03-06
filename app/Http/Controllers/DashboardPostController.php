@@ -8,15 +8,11 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
-use App\Services\UnsplashService;
+use Illuminate\Support\Facades\Storage;
+
 class DashboardPostController extends Controller
 {
-    protected $unsplashService;
-    
-    public function __construct(UnsplashService $unsplashService)
-    {
-        $this->unsplashService = $unsplashService;
-    }
+
     /**
      * Display a listing of the resource.
      */
@@ -42,18 +38,18 @@ class DashboardPostController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'slug' => 'required|unique:posts,slug',
             'category_id' => 'required',
-            'image' =>'image|file|max:10240',
+            'image' => 'image|file|max:10240',
             'content' => 'required',
         ]);
 
         if ($request->file('image')) {
             $validatedData['image'] = $request->file('image')->store('post-images');
-        } 
+        }
 
         $validatedData['user_id'] = Auth::id();
         $validatedData['author'] = Auth::user()->name;
@@ -76,16 +72,7 @@ class DashboardPostController extends Controller
 
     public function show(Posts $post)
     {
-        // dd($post); // Debugging - Check if data is available
-        $photo = [];
-        
-        if (!$post->image) {
-            $categoryName = $post->category->name ?? 'news';
-            $photo = $this->unsplashService->getRandomImage($categoryName);
-        }
-        
-        return view('dashboard.posts.show', compact('post', 'photo'));
-
+        return view('dashboard.posts.show', compact('post'));
     }
 
 
@@ -108,17 +95,23 @@ class DashboardPostController extends Controller
         $rules = [
             'title' => 'required|max:255',
             'category_id' => 'required',
+            'image' => 'image|file|max:10240',
             'content' => 'required',
-            
-            
+
+
         ];
         
-        if($request->slug != $post->slug)
-        {
+        if ($request->slug != $post->slug) {
             $rules['slug'] = 'required|unique:posts';
         }
-
+        
         $validatedData = $request->validate($rules);
+        if ($request->file('image')) {
+            if($request->oldImage){
+                Storage::delete($request->oldImage);
+            }
+            $validatedData['image'] = $request->file('image')->store('post-images');
+        }
         
         $validatedData['user_id'] = Auth::id();
         $validatedData['author'] = Auth::user()->name;
@@ -127,7 +120,6 @@ class DashboardPostController extends Controller
             ->update($validatedData);
 
         return redirect('/dashboard/posts')->with('success', 'New post has been updated!');
-
     }
 
     /**
@@ -135,6 +127,9 @@ class DashboardPostController extends Controller
      */
     public function destroy(Posts $post)
     {
+        if($post->image){
+            Storage::delete($post->image);
+        }
         $post->delete();
         return redirect('/dashboard/posts')->with('success', 'Post has been deleted!');
     }

@@ -12,6 +12,9 @@ class Category extends Model
     /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory;
 
+    protected $fillable = ['name', 'slug'];
+    
+
     public function Posts(): HasMany 
     {
         return $this->hasMany(Posts::class);
