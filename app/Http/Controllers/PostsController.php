@@ -6,6 +6,8 @@ use App\Models\Posts; // Corrected model name
 use Illuminate\Http\Request;
 use App\Services\UnsplashService;
 
+use function Laravel\Prompts\search;
+
 class PostsController extends Controller
 {
     protected $unsplashService;
@@ -15,9 +17,24 @@ class PostsController extends Controller
         $this->unsplashService = $unsplashService;
     }
 
-    public function show($id)
+    public function index(Request $request)
     {
-        $post = Posts::findOrFail($id);
+
+        $query = Posts::query(); // Ambil semua data dari model Post
+
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('title', 'like', '%' . $request->search . '%')
+                ->orWhere('content', 'like', '%' . $request->search . '%');
+        }
+
+        $posts = $query->paginate(6); // Paginate 10 hasil per halaman
+        return view('news.index', compact('posts'));
+    }
+
+
+    public function show($slug)
+    {
+        $post = Posts::where('slug', $slug)->firstOrFail();
         $photo = null;
 
         if (!$post->image) {
@@ -25,6 +42,6 @@ class PostsController extends Controller
             $photo = $this->unsplashService->getRandomImage();
         }
 
-        return view('news', compact('post', 'photo'));
+        return view('news.post', compact('post', 'photo'));
     }
 }

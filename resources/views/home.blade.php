@@ -43,7 +43,7 @@ function getRandomUnsplashImage($query = 'news')
                     <div class="col-lg-8">
                         <!-- Main News -->
                         @if ($majorBreakingStory)
-                            <a href="{{ route('news.show', $majorBreakingStory->id) }}"
+                            <a href="{{ route('news.post', $majorBreakingStory->slug) }}"
                                 style="text-decoration: none; color: inherit;">
                                 <div class="news-card">
                                     @if (!empty($majorBreakingStory->image))
@@ -92,7 +92,7 @@ function getRandomUnsplashImage($query = 'news')
                             @if ($technologyBusinessNews->count() > 0)
                                 @foreach ($technologyBusinessNews as $technews)
                                     <div class="col-md-6">
-                                        <a href="{{ route('news.show', $technews->id) }}"
+                                        <a href="{{ route('news.post', $technews->slug) }}"
                                             style="text-decoration: none; color: inherit;">
                                             <div class="news-card">
                                                 @if (!empty($technews->image))
@@ -121,7 +121,7 @@ function getRandomUnsplashImage($query = 'news')
                         <!--sub main-->
                         @if ($subMainNews->count() > 0)
                             @foreach ($subMainNews as $subnews)
-                                <a href="{{ route('news.show', $subnews->id) }}"
+                                <a href="{{ route('news.post', $subnews->slug) }}"
                                     style="text-decoration: none; color: inherit;">
                                     <div class="news-card-sub">
                                         @if (!empty($subnews->image))
@@ -151,7 +151,7 @@ function getRandomUnsplashImage($query = 'news')
                             <div class="row">
                                 @if ($trendingNews->count() > 0)
                                     @foreach ($trendingNews as $trendnews)
-                                        <a href="{{ route('news.show', $trendnews->id) }}"
+                                        <a href="{{ route('news.post', $trendnews->slug) }}"
                                             style="text-decoration: none; color: inherit;" class="d-flex trend">
                                             <div class="hastag col-md-2">
                                                 <h5>#</h5>

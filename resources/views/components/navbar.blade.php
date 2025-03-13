@@ -13,10 +13,12 @@
             <a class="nav-link" href="/sitemap">SITEMAP</a>
         </li>
     </ul>
-    <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search">
-        <button class="btn btn-outline-light me-2" type="submit">Search</button>
+    <form class="d-flex" action="{{ route('news.index') }}" method="GET">
+        <input class="form-control me-2" type="text" name="search" placeholder="Search..."
+            value="{{ request('search') }}">
+        <button class="btn btn-outline-light" type="submit">Search</button>
     </form>
+
     @auth
         <li class="nav-item dropdown">
             <div class="nav-link dropdown-toggle btn-outline-light text-light" role="button" data-bs-toggle="dropdown"
@@ -70,25 +72,26 @@
         </ul>
 
         <hr class="text-white-50">
-        <form class="d-flex">
-            <input class="form-control me-2 " type="search" placeholder="Search">
-            <button class="btn btn-outline-light " type="submit">Search</button>
-
-
-            @auth
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Welcome,{{ auth()->user()->name }}
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Dashboard</a></li>
-                        <li><a class="dropdown-item" href="#">logout</a></li>
-                    </ul>
-                </li>
-            @else
-                <a class="btn btn-primary mx-2 " href="login.html">Login</a>
-            @endauth
+        <form class="d-flex" action="{{ route('news.index') }}" method="GET">
+            <input class="form-control me-2" type="text" name="search" placeholder="Search..."
+                value="{{ request('search') }}">
+            <button class="btn btn-outline-light" type="submit">Search</button>
         </form>
+
+
+        @auth
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Welcome,{{ auth()->user()->name }}
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Dashboard</a></li>
+                    <li><a class="dropdown-item" href="#">logout</a></li>
+                </ul>
+            </li>
+        @else
+            <a class="btn btn-primary mx-2 " href="login.html">Login</a>
+        @endauth
     </div>
 </div>
